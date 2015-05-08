@@ -39,24 +39,32 @@ stop_words = parse_stop_words 'stopwords.txt'
 
 data = []
 
-url = 'http://techcrunch.com/page/1/'
-doc = Nokogiri::HTML(open(url)).to_s
+N = 1000
 
-links = doc.scan(/http:\/\/techcrunch.com\/\d{4}\/\d{2}\/\d{2}\/[-\da-z]*\//).uniq
+basic_url = 'http://techcrunch.com/page/'
 
-threads = []
+(1..N).each do |i|
+	url = basic_url + i.to_s
 
-link = 'http://techcrunch.com/2015/05/08/who-the-smartphone-revolution-left-behind/'
+	doc = Nokogiri::HTML(open(url)).to_s
 
-links.each do |link|
-	threads << Thread.new do
-		title, text = parse link, stop_words
-		data << {title: title, text: text, link: link}
+	links = doc.scan(/http:\/\/techcrunch.com\/\d{4}\/\d{2}\/\d{2}\/[-\da-z]*\//).uniq
+
+	threads = []
+
+	links.each do |link|
+		threads << Thread.new do
+			title, text = parse link, stop_words
+			data << {title: title, text: text, link: link}
+		end
 	end
-end
 
-threads.each do |thread|
-    thread.join
+	threads.each do |thread|
+	    thread.join
+	end
+
+	puts i
+
 end
 
 serialized_data = Marshal::dump(data)
