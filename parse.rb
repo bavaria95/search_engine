@@ -19,10 +19,17 @@ doc = Nokogiri::HTML(open(url)).to_s
 
 links = doc.scan(/http:\/\/techcrunch.com\/\d{4}\/\d{2}\/\d{2}\/[-\da-z]*\//).uniq
 
+threads = []
 
 links.each do |link|
-	title, text = parse link
-	data << {title: title, text: text}
+	threads << Thread.new do
+		title, text = parse link
+		data << {title: title, text: text}
+	end
+end
+
+threads.each do |thread|
+    thread.join
 end
 
 
