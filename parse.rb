@@ -32,8 +32,6 @@ def parse link, stop_words
 	# stemming
 	doc = doc.map{|word| Stemmer::stem_word(word)}
 
-	# p doc
-
 	return title, doc
 end
 
@@ -61,4 +59,8 @@ threads.each do |thread|
     thread.join
 end
 
-puts data
+serialized_data = Marshal::dump(data)
+
+f = File.open('data.txt', 'wb')
+
+f.puts serialized_data
