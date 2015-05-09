@@ -15,6 +15,9 @@ data = read_data('data.txt')
 
 dict = generate_dict(data)
 
+# deleting words from dictionary presented only once
+dict = dict.delete_if{|k, v| v == 1}
+
 serialized_data = Marshal::dump(dict)
 
 f = File.open('dict.txt', 'wb')
