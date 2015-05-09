@@ -18,6 +18,9 @@ dict = generate_dict(data)
 # deleting words from dictionary presented only once
 dict = dict.delete_if{|k, v| v == 1}
 
+# leaving only words, without frequency
+dict = dict.keys
+
 serialized_data = Marshal::dump(dict)
 
 f = File.open('dict.txt', 'wb')
