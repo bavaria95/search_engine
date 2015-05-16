@@ -17,12 +17,16 @@ N = float(len(data))
 
 idf = []
 
+i = 0
+
 for w in d:
 	count = 0
 	for article in data:
 		if w in article['text']: count += 1
 
 	idf.append(np.log2(N / count))
+	print(i)
+	i += 1
 
 f = open('idf.dat', 'w')
 
