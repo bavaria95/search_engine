@@ -3,7 +3,7 @@ from scipy.sparse.linalg import svds
 from scipy.sparse import lil_matrix
 import pickle
 
-f = open('matrix_idf.dat', 'r')
+f = open('matrix.dat', 'r')
 A = pickle.load(f)
 f.close()
 
